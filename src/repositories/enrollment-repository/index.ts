@@ -29,9 +29,6 @@ async function getEnrollmentId(userId: number) {
     where: {
       userId,
     },
-    select: {
-      id: true,
-    },
   });
   return enrollment;
 }

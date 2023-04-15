@@ -9,16 +9,14 @@ async function findByTicketId(ticketId: number, userId: number) {
   if (isNaN(ticketId)) {
     throw BadRequestError('TicketId is invalid');
   }
-  const payment = await paymentRepository.findTicketId(ticketId);
-  if (!payment) {
-    console.log(payment);
+  const ticket = await ticketRepository.findTicketId(ticketId);
+  if (!ticket) {
     throw notFoundError();
   }
-  const ticketOwnerId = payment.Ticket.Enrollment.userId;
-  if (ticketOwnerId !== userId) {
+  if (ticket.Enrollment.userId !== userId) {
     throw unauthorizedError();
   }
-  delete payment.Ticket;
+  const payment = await paymentRepository.findTicketId(ticketId);
   return payment;
 }
 
