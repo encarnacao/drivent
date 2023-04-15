@@ -1,3 +1,4 @@
+import { Prisma } from '@prisma/client';
 import { prisma } from '@/config';
 
 async function findTicketId(ticketId: number) {
@@ -28,4 +29,11 @@ async function findTicketId(ticketId: number) {
   return payment;
 }
 
-export default { findTicketId };
+async function insertPayment(data: Prisma.PaymentCreateInput) {
+  const payment = await prisma.payment.create({
+    data,
+  });
+  return payment;
+}
+
+export default { findTicketId, insertPayment };
