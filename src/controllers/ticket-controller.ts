@@ -4,7 +4,7 @@ import ticketsService from '@/services/ticket-service';
 
 async function getTicketsTypes(_req: AuthenticatedRequest, res: Response) {
   try {
-    const ticketsTypes = await ticketsService.getTicketsTypes();
+    const ticketsTypes = await ticketsService.getAll();
     res.send(ticketsTypes);
   } catch (error) {
     res.sendStatus(500);

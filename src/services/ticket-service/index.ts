@@ -1,12 +1,12 @@
 import ticketsRepository from '@/repositories/ticket-repository';
 
-export async function getTicketsTypes() {
+export async function getAll() {
   const ticketsTypes = await ticketsRepository.findTicketsType();
   return ticketsTypes;
 }
 
 const ticketsService = {
-  getTicketsTypes,
+  getAll,
 };
 
 export default ticketsService;
