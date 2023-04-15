@@ -15,8 +15,6 @@ async function findByTicketId(ticketId: number, userId: number) {
     throw notFoundError();
   }
   const ticketOwnerId = payment.Ticket.Enrollment.userId;
-  console.log('ticketOwnerId', ticketOwnerId);
-  console.log('userId', userId);
   if (ticketOwnerId !== userId) {
     throw unauthorizedError();
   }
