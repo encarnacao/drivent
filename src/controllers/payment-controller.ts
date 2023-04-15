@@ -3,25 +3,13 @@ import httpStatus from 'http-status';
 import { AuthenticatedRequest } from '@/middlewares';
 import paymentService from '@/services/payment-service';
 import { PaymentParams } from '@/schemas/payments-schema';
-import { notFoundError, unauthorizedError } from '@/errors';
 
 async function getPaymentByTicketId(req: AuthenticatedRequest, res: Response) {
   try {
     const ticketId = Number(req.query.ticketId);
-    if (!ticketId) {
-      throw { name: 'BadRequestError', message: 'TicketId is required' };
-    }
-    const payment = await paymentService.findByTicketId(Number(ticketId));
-    if (!payment) {
-      throw notFoundError();
-    }
-    if (payment.Ticket.Enrollment.userId !== req.userId) {
-      throw unauthorizedError();
-    }
-    delete payment.Ticket;
+    const payment = await paymentService.findByTicketId(ticketId, req.userId);
     res.json(payment);
   } catch (error) {
-    console.log(error);
     if (error.name === 'NotFoundError') {
       return res.status(httpStatus.NOT_FOUND).send(error.message);
     }

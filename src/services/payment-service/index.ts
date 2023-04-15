@@ -3,9 +3,24 @@ import { notFoundError, unauthorizedError } from '@/errors';
 import paymentRepository from '@/repositories/payment-repository';
 import ticketRepository from '@/repositories/ticket-repository';
 import { PaymentParams } from '@/schemas/payments-schema';
+import { BadRequestError } from '@/errors/bad-request-error';
 
-async function findByTicketId(ticketId: number) {
+async function findByTicketId(ticketId: number, userId: number) {
+  if (isNaN(ticketId)) {
+    throw BadRequestError('TicketId is invalid');
+  }
   const payment = await paymentRepository.findTicketId(ticketId);
+  if (!payment) {
+    console.log(payment);
+    throw notFoundError();
+  }
+  const ticketOwnerId = payment.Ticket.Enrollment.userId;
+  console.log('ticketOwnerId', ticketOwnerId);
+  console.log('userId', userId);
+  if (ticketOwnerId !== userId) {
+    throw unauthorizedError();
+  }
+  delete payment.Ticket;
   return payment;
 }
 
