@@ -206,7 +206,7 @@ describe('GET /hotels', () => {
   });
 
   describe('when token is valid', () => {
-    it('should respond with status 200 and an empty array if ticket paid and includes hotel', async () => {
+    it('should respond with status 404 if ticket paid and includes hotel but there are no hotels', async () => {
       const user = await createUser();
       const token = await generateValidToken(user);
       const enrollment = await createEnrollmentWithAddress(user);
@@ -215,8 +215,7 @@ describe('GET /hotels', () => {
       const payment = await createPayment(ticket.id, ticketType.price);
       const response = await server.get('/hotels').set('Authorization', `Bearer ${token}`);
 
-      expect(response.status).toEqual(httpStatus.OK);
-      expect(response.body).toEqual([]);
+      expect(response.status).toEqual(httpStatus.NOT_FOUND);
     });
 
     it('should respond with status 200 and an array of hotels if ticket paid and includes hotel', async () => {
