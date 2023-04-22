@@ -18,7 +18,6 @@ export async function getPaymentByTicketId(userId: number, ticketId: number) {
   await verifyTicketAndEnrollment(ticketId, userId);
 
   const payment = await paymentsRepository.findPaymentByTicketId(ticketId);
-  if (!payment) throw notFoundError();
 
   return payment;
 }

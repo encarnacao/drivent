@@ -9,11 +9,8 @@ import ticketService from '@/services/tickets-service';
 async function validadeRequest(req: AuthenticatedRequest) {
   const userId = req.userId;
   const ticket = await ticketService.getTicketByUserId(userId);
-  try {
-    await paymentsService.getPaymentByTicketId(userId, ticket.id);
-  } catch {
-    throw paymentRequiredError();
-  }
+  const payments = await paymentsService.getPaymentByTicketId(userId, ticket.id);
+  if (!payments) throw paymentRequiredError();
   if (ticket.TicketType.isRemote || !ticket.TicketType.includesHotel) {
     throw paymentRequiredError();
   }
