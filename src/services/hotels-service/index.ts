@@ -3,7 +3,6 @@ import hotelRepository from '@/repositories/hotels-repository';
 
 export async function findAllHotels() {
   const hotels = await hotelRepository.findAllHotels();
-  if (!hotels) throw notFoundError();
   return hotels;
 }
 
