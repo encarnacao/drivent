@@ -55,8 +55,7 @@ describe('GET /hotels/:id', () => {
       const token = await generateValidToken(user);
       const enrollment = await createEnrollmentWithAddress(user);
       const ticketType = await createNotRemote(true);
-      const ticket = await createTicket(enrollment.id, ticketType.id, TicketStatus.PAID);
-      await createPayment(ticket.id, ticketType.price);
+      await createTicket(enrollment.id, ticketType.id, TicketStatus.PAID);
       const hotel = await createHotel();
       const response = await server.get('/hotels/' + hotel.id).set('Authorization', `Bearer ${token}`);
       expect(response.status).toEqual(httpStatus.OK);
@@ -75,8 +74,7 @@ describe('GET /hotels/:id', () => {
       const token = await generateValidToken(user);
       const enrollment = await createEnrollmentWithAddress(user);
       const ticketType = await createNotRemote(true);
-      const ticket = await createTicket(enrollment.id, ticketType.id, TicketStatus.PAID);
-      await createPayment(ticket.id, ticketType.price);
+      await createTicket(enrollment.id, ticketType.id, TicketStatus.PAID);
       const hotel = await createHotel();
       const room = await createHotelRoom(hotel.id);
       const response = await server.get('/hotels/' + hotel.id).set('Authorization', `Bearer ${token}`);
@@ -124,8 +122,7 @@ describe('GET /hotels/:id', () => {
       const token = await generateValidToken(user);
       const enrollment = await createEnrollmentWithAddress(user);
       const ticketType = await createRemoteTicketType();
-      const ticket = await createTicket(enrollment.id, ticketType.id, TicketStatus.PAID);
-      await createPayment(ticket.id, ticketType.price);
+      await createTicket(enrollment.id, ticketType.id, TicketStatus.PAID);
       const hotel = await createHotel();
       await createHotelRoom(hotel.id);
       const response = await server.get('/hotels/' + hotel.id).set('Authorization', `Bearer ${token}`);
@@ -137,8 +134,7 @@ describe('GET /hotels/:id', () => {
       const token = await generateValidToken(user);
       const enrollment = await createEnrollmentWithAddress(user);
       const ticketType = await createNotRemote(false);
-      const ticket = await createTicket(enrollment.id, ticketType.id, TicketStatus.PAID);
-      await createPayment(ticket.id, ticketType.price);
+      await createTicket(enrollment.id, ticketType.id, TicketStatus.PAID);
       const hotel = await createHotel();
       await createHotelRoom(hotel.id);
       const response = await server.get('/hotels/' + hotel.id).set('Authorization', `Bearer ${token}`);
@@ -162,8 +158,7 @@ describe('GET /hotels/:id', () => {
       const token = await generateValidToken(user);
       const enrollment = await createEnrollmentWithAddress(user);
       const ticketType = await createNotRemote(true);
-      const ticket = await createTicket(enrollment.id, ticketType.id, TicketStatus.PAID);
-      await createPayment(ticket.id, ticketType.price);
+      await createTicket(enrollment.id, ticketType.id, TicketStatus.PAID);
       const response = await server.get('/hotels/' + faker.datatype.number()).set('Authorization', `Bearer ${token}`);
       expect(response.status).toEqual(httpStatus.NOT_FOUND);
     });
@@ -173,8 +168,7 @@ describe('GET /hotels/:id', () => {
       const token = await generateValidToken(user);
       const enrollment = await createEnrollmentWithAddress(user);
       const ticketType = await createNotRemote(true);
-      const ticket = await createTicket(enrollment.id, ticketType.id, TicketStatus.PAID);
-      await createPayment(ticket.id, ticketType.price);
+      await createTicket(enrollment.id, ticketType.id, TicketStatus.PAID);
       const response = await server.get('/hotels/' + faker.lorem.word()).set('Authorization', `Bearer ${token}`);
       expect(response.status).toEqual(httpStatus.BAD_REQUEST);
     });
@@ -211,8 +205,7 @@ describe('GET /hotels', () => {
       const token = await generateValidToken(user);
       const enrollment = await createEnrollmentWithAddress(user);
       const ticketType = await createNotRemote(true);
-      const ticket = await createTicket(enrollment.id, ticketType.id, TicketStatus.PAID);
-      const payment = await createPayment(ticket.id, ticketType.price);
+      await createTicket(enrollment.id, ticketType.id, TicketStatus.PAID);
       const response = await server.get('/hotels').set('Authorization', `Bearer ${token}`);
 
       expect(response.status).toEqual(httpStatus.NOT_FOUND);
@@ -223,8 +216,7 @@ describe('GET /hotels', () => {
       const token = await generateValidToken(user);
       const enrollment = await createEnrollmentWithAddress(user);
       const ticketType = await createNotRemote(true);
-      const ticket = await createTicket(enrollment.id, ticketType.id, TicketStatus.PAID);
-      await createPayment(ticket.id, ticketType.price);
+      await createTicket(enrollment.id, ticketType.id, TicketStatus.PAID);
       const hotel = await createHotel();
       const response = await server.get('/hotels').set('Authorization', `Bearer ${token}`);
       expect(response.status).toEqual(httpStatus.OK);
@@ -259,8 +251,7 @@ describe('GET /hotels', () => {
       const token = await generateValidToken(user);
       const enrollment = await createEnrollmentWithAddress(user);
       const ticketType = await createRemoteTicketType();
-      const ticket = await createTicket(enrollment.id, ticketType.id, TicketStatus.PAID);
-      await createPayment(ticket.id, ticketType.price);
+      await createTicket(enrollment.id, ticketType.id, TicketStatus.PAID);
       const response = await server.get('/hotels').set('Authorization', `Bearer ${token}`);
       expect(response.status).toEqual(httpStatus.PAYMENT_REQUIRED);
     });
@@ -270,8 +261,7 @@ describe('GET /hotels', () => {
       const token = await generateValidToken(user);
       const enrollment = await createEnrollmentWithAddress(user);
       const ticketType = await createNotRemote(false);
-      const ticket = await createTicket(enrollment.id, ticketType.id, TicketStatus.PAID);
-      await createPayment(ticket.id, ticketType.price);
+      await createTicket(enrollment.id, ticketType.id, TicketStatus.PAID);
       const response = await server.get('/hotels').set('Authorization', `Bearer ${token}`);
       expect(response.status).toEqual(httpStatus.PAYMENT_REQUIRED);
     });

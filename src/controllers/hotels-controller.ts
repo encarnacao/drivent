@@ -1,5 +1,6 @@
 import { Response } from 'express';
 import httpStatus from 'http-status';
+import { TicketStatus } from '@prisma/client';
 import { paymentRequiredError } from '@/errors/payment-required-error';
 import { AuthenticatedRequest } from '@/middlewares';
 import hotelService from '@/services/hotels-service';
@@ -9,8 +10,7 @@ import ticketService from '@/services/tickets-service';
 async function validadeRequest(req: AuthenticatedRequest) {
   const userId = req.userId;
   const ticket = await ticketService.getTicketByUserId(userId);
-  const payments = await paymentsService.getPaymentByTicketId(userId, ticket.id);
-  if (!payments) throw paymentRequiredError();
+  if (ticket.status !== TicketStatus.PAID) throw paymentRequiredError();
   if (ticket.TicketType.isRemote || !ticket.TicketType.includesHotel) {
     throw paymentRequiredError();
   }
