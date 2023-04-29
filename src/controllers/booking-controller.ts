@@ -8,7 +8,12 @@ import { forbiddenError } from '@/errors';
 
 async function validateRequest(req: AuthenticatedRequest) {
   const userId = req.userId;
-  const ticket = await ticketService.getTicketByUserId(userId);
+  let ticket;
+  try {
+    ticket = await ticketService.getTicketByUserId(userId);
+  } catch (err) {
+    throw forbiddenError('User has no ticket');
+  }
   if (ticket.TicketType.isRemote) {
     throw forbiddenError('Ticket is remote');
   }
