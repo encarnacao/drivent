@@ -15,7 +15,7 @@ async function checkRoom(roomId: number) {
 async function checkBooking(bookingId: number, userId: number) {
   const booking = await bookingRepository.findBookingById(bookingId);
   if (!booking) {
-    throw notFoundError();
+    throw forbiddenError("You don't have any booking");
   }
   if (booking.userId !== userId) {
     throw forbiddenError('You are not allowed to do this');

@@ -1,7 +1,24 @@
 import { Response } from 'express';
 import httpStatus from 'http-status';
+import { TicketStatus } from '@prisma/client';
 import { AuthenticatedRequest } from '@/middlewares';
 import bookingService from '@/services/booking-service';
+import ticketService from '@/services/tickets-service';
+import { forbiddenError } from '@/errors';
+
+async function validateRequest(req: AuthenticatedRequest) {
+  const userId = req.userId;
+  const ticket = await ticketService.getTicketByUserId(userId);
+  if (ticket.TicketType.isRemote) {
+    throw forbiddenError('Ticket is remote');
+  }
+  if (!ticket.TicketType.includesHotel) {
+    throw forbiddenError('Ticket does not include hotel');
+  }
+  if (ticket.status !== TicketStatus.PAID) {
+    throw forbiddenError('Ticket is not paid');
+  }
+}
 
 export async function getBooking(req: AuthenticatedRequest, res: Response) {
   const userId = req.userId;
@@ -20,6 +37,7 @@ export async function postBooking(req: AuthenticatedRequest, res: Response) {
   const userId = req.userId;
   const roomId = req.body.roomId as number;
   try {
+    validateRequest(req);
     const booking = await bookingService.createBooking(userId, roomId);
     return res.status(httpStatus.OK).send({ bookingId: booking.id });
   } catch (err) {
